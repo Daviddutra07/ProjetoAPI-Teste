@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Sistema Financeiro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+    <h1 class="text-2xl font-bold mb-4">Lançamentos Financeiros</h1>
+
+    <form id="form" class="bg-white p-4 rounded shadow mb-4">
+        <input id="titulo" placeholder="Título" class="border p-2 w-full mb-2" required>
+        
+        <select id="tipo" class="border p-2 w-full mb-2">
+            <option value="entrada">Entrada</option>
+            <option value="saida">Saída</option>
+        </select>
+
+        <select id="status" class="border p-2 w-full mb-2">
+            <option value="ativo">Ativo</option>
+            <option value="concluido">Concluído</option>
+            <option value="arquivado">Arquivado</option>
+        </select>
+
+        <input id="valor" type="number" placeholder="Valor" class="border p-2 w-full mb-2" required>
+
+        <input id="data" type="date" class="border p-2 w-full mb-2">
+
+        <button class="bg-blue-500 text-white px-4 py-2 rounded"> Salvar </button>
+    </form>
+
+  <!-- Filtros -->
+  <div class="mb-4">
+    <label>Filtrar por tipo:</label>
+    <select id="filtro-tipo" class="border p-2 mr-2">
+      <option value="">Todos</option>
+      <option value="entrada">Entrada</option>
+      <option value="saida">Saída</option>
+    </select>
+
+    <label>Filtrar por status:</label>
+    <select id="filtro-status" class="border p-2">
+      <option value="">Todos</option>
+      <option value="ativo">Ativo</option>
+      <option value="concluido">Concluído</option>
+      <option value="arquivado">Arquivado</option>
+    </select>
+  </div>
+
+  <!-- Lista de itens -->
+  <ul id="lista" class="bg-white p-4 rounded shadow"></ul>
+
+  <!-- Saldo -->
+  <div id="saldo" class="mt-4 text-lg font-bold"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

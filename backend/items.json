@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "titulo": "Salário Mensal",
+    "tipo": "entrada",
+    "status": "ativo",
+    "valor": 5000,
+    "data": "2026-01-29"
+  },
+  {
+    "id": 2,
+    "titulo": "Contas Básicas",
+    "tipo": "saida",
+    "status": "ativo",
+    "valor": 1500,
+    "data": "2026-01-30"
+  }
+]
