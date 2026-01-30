@@ -2,58 +2,138 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Mini Sistema Financeiro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financeiro Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-6">
+<body class="bg-slate-50 min-h-screen">
 
-    <h1 class="text-2xl font-bold mb-4">Lançamentos Financeiros</h1>
+    <div class="max-w-4xl mx-auto p-6">
+        <h1 class="text-3xl font-extrabold text-slate-800 mb-8">💰 Meu Financeiro</h1>
 
-    <form id="form" class="bg-white p-4 rounded shadow mb-4">
-        <input id="titulo" placeholder="Título" class="border p-2 w-full mb-2" required>
-        
-        <select id="tipo" class="border p-2 w-full mb-2">
-            <option value="entrada">Entrada</option>
-            <option value="saida">Saída</option>
-        </select>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-500">
+                <p class="text-sm text-gray-500 font-medium uppercase">Entradas</p>
+                <p id="resumo-entradas" class="text-2xl font-bold text-green-600">R$ 0,00</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-red-500">
+                <p class="text-sm text-gray-500 font-medium uppercase">Dívidas (Saídas)</p>
+                <p id="resumo-saidas" class="text-2xl font-bold text-red-600">R$ 0,00</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
+                <p class="text-sm text-gray-500 font-medium uppercase">Saldo Total</p>
+                <p id="resumo-saldo" class="text-2xl font-bold text-slate-800">R$ 0,00</p>
+            </div>
+        </div>
 
-        <select id="status" class="border p-2 w-full mb-2">
-            <option value="ativo">Ativo</option>
-            <option value="concluido">Concluído</option>
-            <option value="arquivado">Arquivado</option>
-        </select>
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <h2 class="text-lg font-bold mb-4">Novo Lançamento</h2>
+            <form id="form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <input id="titulo" placeholder="Ex: Aluguel" class="border p-2 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none" required>
+                <input id="valor" type="number" step="0.01" placeholder="Valor (R$)" class="border p-2 rounded-lg" required>
+                <input id="data" type="date" class="border p-2 rounded-lg">
+                
+                <select id="tipo" class="border p-2 rounded-lg">
+                    <option value="saida">🔴 Saída (Dívida)</option>
+                    <option value="entrada">🟢 Entrada (Receita)</option>
+                </select>
 
-        <input id="valor" type="number" placeholder="Valor" class="border p-2 w-full mb-2" required>
+                <select id="status" class="border p-2 rounded-lg">
+                    <option value="ativo">Pendente</option>
+                    <option value="concluido">Pago/Recebido</option>
+                </select>
 
-        <input id="data" type="date" class="border p-2 w-full mb-2">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                    + Adicionar
+                </button>
+            </form>
+        </div>
 
-        <button class="bg-blue-500 text-white px-4 py-2 rounded"> Salvar </button>
-    </form>
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="p-4 border-b bg-gray-50 flex justify-between items-center">
+                <h3 class="font-bold">Histórico</h3>
+                <div class="flex gap-2">
+                    <select id="filtro-tipo" class="text-sm border rounded p-1">
+                        <option value="">Todos os tipos</option>
+                        <option value="entrada">Entradas</option>
+                        <option value="saida">Saídas</option>
+                    </select>
+                </div>
+            </div>
+            <ul id="lista" class="divide-y divide-gray-100">
+                </ul>
+        </div>
+    </div>
 
-  <!-- Filtros -->
-  <div class="mb-4">
-    <label>Filtrar por tipo:</label>
-    <select id="filtro-tipo" class="border p-2 mr-2">
-      <option value="">Todos</option>
-      <option value="entrada">Entrada</option>
-      <option value="saida">Saída</option>
-    </select>
+    <script>
+        const API = "http://127.0.0.1:5000/items";
 
-    <label>Filtrar por status:</label>
-    <select id="filtro-status" class="border p-2">
-      <option value="">Todos</option>
-      <option value="ativo">Ativo</option>
-      <option value="concluido">Concluído</option>
-      <option value="arquivado">Arquivado</option>
-    </select>
-  </div>
+        async function carregarDados() {
+            // Buscar Itens
+            const tipo = document.getElementById('filtro-tipo').value;
+            const res = await fetch(`${API}?tipo=${tipo}`);
+            const items = await res.json();
+            
+            // Buscar Resumo Matemático
+            const resResumo = await fetch(`${API}/summary`);
+            const resumo = await resResumo.json();
 
-  <!-- Lista de itens -->
-  <ul id="lista" class="bg-white p-4 rounded shadow"></ul>
+            renderizar(items, resumo);
+        }
 
-  <!-- Saldo -->
-  <div id="saldo" class="mt-4 text-lg font-bold"></div>
+        function renderizar(items, resumo) {
+            // Atualiza os Cards
+            document.getElementById('resumo-entradas').innerText = `R$ ${resumo.total_entradas.toFixed(2)}`;
+            document.getElementById('resumo-saidas').innerText = `R$ ${resumo.total_saidas.toFixed(2)}`;
+            document.getElementById('resumo-saldo').innerText = `R$ ${resumo.saldo.toFixed(2)}`;
 
-  <script src="app.js"></script>
+            // Atualiza a Lista
+            const lista = document.getElementById('lista');
+            lista.innerHTML = items.map(i => `
+                <li class="p-4 flex justify-between items-center hover:bg-gray-50">
+                    <div>
+                        <p class="font-semibold text-slate-700">${i.titulo}</p>
+                        <p class="text-xs text-gray-400">${i.data || 'Sem data'}</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="font-bold ${i.tipo === 'entrada' ? 'text-green-500' : 'text-red-500'}">
+                            ${i.tipo === 'entrada' ? '+' : '-'} R$ ${i.valor.toFixed(2)}
+                        </span>
+                        <button onclick="deletar(${i.id})" class="text-gray-300 hover:text-red-500 text-sm">✖</button>
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        document.getElementById('form').onsubmit = async (e) => {
+            e.preventDefault();
+            const payload = {
+                titulo: document.getElementById('titulo').value,
+                valor: document.getElementById('valor').value,
+                tipo: document.getElementById('tipo').value,
+                status: document.getElementById('status').value,
+                data: document.getElementById('data').value
+            };
+
+            await fetch(API, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            
+            e.target.reset();
+            carregarDados();
+        };
+
+        async function deletar(id) {
+            await fetch(`${API}/${id}`, { method: 'DELETE' });
+            carregarDados();
+        }
+
+        document.getElementById('filtro-tipo').onchange = carregarDados;
+
+        // Inicializar
+        carregarDados();
+    </script>
 </body>
 </html>

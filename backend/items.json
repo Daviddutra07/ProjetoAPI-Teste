@@ -1,18 +1,18 @@
 [
   {
     "id": 1,
-    "titulo": "Salário Mensal",
+    "titulo": "aluguel",
     "tipo": "entrada",
     "status": "ativo",
-    "valor": 5000,
-    "data": "2026-01-29"
+    "valor": 30000.0,
+    "data": "2026-01-30"
   },
   {
     "id": 2,
-    "titulo": "Contas Básicas",
+    "titulo": "aluguel",
     "tipo": "saida",
     "status": "ativo",
-    "valor": 1500,
+    "valor": 1000.0,
     "data": "2026-01-30"
   }
 ]
