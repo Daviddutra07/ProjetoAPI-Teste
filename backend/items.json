@@ -6,13 +6,5 @@
     "status": "ativo",
     "valor": 30000.0,
     "data": "2026-01-30"
-  },
-  {
-    "id": 2,
-    "titulo": "aluguel",
-    "tipo": "saida",
-    "status": "ativo",
-    "valor": 1000.0,
-    "data": "2026-01-30"
   }
 ]
