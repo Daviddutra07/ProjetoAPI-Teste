@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import json
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../frontend")
 CORS(app)
 
 ARQUIVO = "items.json"
@@ -21,6 +21,10 @@ def salvar_dados(items):
         json.dump(items, f, ensure_ascii=False, indent=2)
 
 # --- Rotas ---
+
+@app.route('/')
+def index():
+    return send_from_directory(app.static_folder, "index.html")
 
 @app.route("/items/summary", methods=["GET"])
 def obter_resumo():
