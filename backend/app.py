@@ -21,11 +21,6 @@ def salvar_dados(items):
         json.dump(items, f, ensure_ascii=False, indent=2)
 
 # --- Rotas ---
-
-@app.route('/')
-def index():
-    return send_from_directory(app.static_folder, "index.html")
-
 @app.route("/items/summary", methods=["GET"])
 def obter_resumo():
     items = carregar_dados()
