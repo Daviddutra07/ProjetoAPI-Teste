@@ -14,13 +14,5 @@
     "status": "ativo",
     "valor": 1000.0,
     "data": "2026-01-30"
-  },
-  {
-    "id": 3,
-    "titulo": "teste",
-    "tipo": "entrada",
-    "status": "ativo",
-    "valor": 400.0,
-    "data": "2026-02-26"
   }
 ]

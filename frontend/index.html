@@ -9,8 +9,42 @@
 
 <body class="bg-slate-50 min-h-screen flex flex-col">
     <main class="flex-1">
+        <header class="bg-slate-900">
+            <div class="flex items-center gap-2">
+                <img 
+                    src="../frontend/fotos/logo.png" 
+                    alt=""
+                    class="h-8 w-8 object-contain"
+                />
+            </div>
+
+            <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+
+                <div class="flex items-center gap-2">
+                </div>
+
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-200">
+                <a href="#" class="hover:text-white transition">Inicio</a>
+                <a href="#" class="hover:text-white transition">Serviços</a>
+                <a href="#" class="hover:text-white transition">Diretrizes</a>
+                <a href="#" class="hover:text-white transition">Suporte</a>
+                </nav>
+
+                <div>
+                <a
+                    href="#"
+                    class="flex items-center gap-1 text-sm font-semibold text-white hover:text-indigo-400 transition"
+                >
+                    Log in
+                    <span aria-hidden="true">→</span>
+                </a>
+                </div>
+
+            </div>
+        </header>
+
         <div class="max-w-4xl mx-auto p-6">
-            <h1 class="text-3xl font-extrabold text-slate-800 mb-8">💰 Meu Financeiro</h1>
+            <h1 class="text-3xl font-extrabold text-slate-800 mb-8"> Meu Financeiro</h1>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-500">
@@ -38,8 +72,8 @@
                     <input id="data" type="date" class="border p-2 rounded-lg">
 
                     <select id="tipo" class="border p-2 rounded-lg">
-                        <option value="saida">🔴 Saída (Dívida)</option>
-                        <option value="entrada">🟢 Entrada (Receita)</option>
+                        <option value="saida"> Saída (Dívida)</option>
+                        <option value="entrada"> Entrada (Receita)</option>
                     </select>
 
                     <select id="status" class="border p-2 rounded-lg">
