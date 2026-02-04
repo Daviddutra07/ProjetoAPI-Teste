@@ -6,11 +6,37 @@ const form = document.getElementById("form");
 const filtroTipo = document.getElementById("filtro-tipo");
 const filtroStatus = document.getElementById("filtro-status");
 
+const feedback = document.getElementById("feedback");
+const loading = document.getElementById("loading");
+
+const resumoEntradas = document.getElementById("resumo-entradas");
+const resumoSaidas = document.getElementById("resumo-saidas");
+const resumoSaldo = document.getElementById("resumo-saldo");
+
 let editandoId = null;
 
-// Carregando os Itens do JSOn
+// Mensangens de Erro
+function mostrarFeedback(mensagem, tipo) {
+    feedback.className = "p-3 rounded text-sm";
+
+    if (tipo === "erro") {
+        feedback.classList.add("bg-red-100", "text-red-700");
+    } else {
+        feedback.classList.add("bg-green-100", "text-green-700");
+    }
+
+    feedback.innerText = mensagem;
+    feedback.classList.remove("hidden");
+
+    setTimeout(() => {
+        feedback.classList.add("hidden");
+    }, 3000);
+}
+
+// Puxar os itens do JSON
 function carregar() {
-    lista.innerHTML = "Carregando...";
+    loading.classList.remove("hidden");
+    lista.innerHTML = "";
 
     let url = API;
     const tipo = filtroTipo.value;
@@ -31,8 +57,6 @@ function carregar() {
             return res.json();
         })
         .then(dados => {
-            lista.innerHTML = "";
-
             let totalEntrada = 0;
             let totalSaida = 0;
 
@@ -68,15 +92,19 @@ function carregar() {
                 </li>`;
             });
 
-            document.getElementById("saldo").innerText =
-                "Saldo: R$ " + (totalEntrada - totalSaida);
+            resumoEntradas.innerText = "R$ " + totalEntrada;
+            resumoSaidas.innerText = "R$ " + totalSaida;
+            resumoSaldo.innerText = "R$ " + (totalEntrada - totalSaida);
         })
         .catch(err => {
-            lista.innerHTML = err.message;
+            mostrarFeedback(err.message, "erro");
+        })
+        .finally(() => {
+            loading.classList.add("hidden");
         });
 }
 
-// CRUD dos Itens
+// Salvar o Item
 form.onsubmit = function (e) {
     e.preventDefault();
 
@@ -113,16 +141,14 @@ form.onsubmit = function (e) {
             form.reset();
             editandoId = null;
             carregar();
-            alert("Item salvo com sucesso!");
+            mostrarFeedback("Item salvo com sucesso!", "sucesso");
         })
         .catch(err => {
-            alert(err.message);
+            mostrarFeedback(err.message, "erro");
         });
 };
 
-/* =====================
-   EDITAR ITEM (PUT)
-===================== */
+// Edição de Item
 function editarItem(id) {
     fetch(`${API}/${id}`)
         .then(res => res.json())
@@ -137,17 +163,13 @@ function editarItem(id) {
         });
 }
 
-/* =====================
-   REMOVER ITEM
-===================== */
+// Remover o Item
 function remover(id) {
     fetch(`${API}/${id}`, { method: "DELETE" })
         .then(() => carregar());
 }
 
-/* =====================
-   ALTERAR STATUS (PATCH)
-===================== */
+// Mudar status
 function editarStatus(id) {
     fetch(`${API}/${id}`)
         .then(res => res.json())
@@ -169,13 +191,9 @@ function editarStatus(id) {
         });
 }
 
-/* =====================
-   FILTROS
-===================== */
+// Filttros
 filtroTipo.onchange = carregar;
 filtroStatus.onchange = carregar;
 
-/* =====================
-   INICIALIZAÇÃO
-===================== */
+
 carregar();

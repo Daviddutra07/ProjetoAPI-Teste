@@ -3,176 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financeiro Pro</title>
+    <title>IF-Nanças</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-slate-50 min-h-screen flex flex-col">
-    <main class="flex-1">
-        <header class="bg-slate-900">
-            <div class="flex items-center gap-2">
-                <img 
-                    src="../frontend/fotos/logo.png" 
-                    alt=""
-                    class="h-8 w-8 object-contain"
-                />
-            </div>
 
-            <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-
-                <div class="flex items-center gap-2">
-                </div>
-
-                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-200">
-                <a href="#" class="hover:text-white transition">Inicio</a>
-                <a href="#" class="hover:text-white transition">Serviços</a>
-                <a href="#" class="hover:text-white transition">Diretrizes</a>
-                <a href="#" class="hover:text-white transition">Suporte</a>
-                </nav>
-
-                <div>
-                <a
-                    href="#"
-                    class="flex items-center gap-1 text-sm font-semibold text-white hover:text-indigo-400 transition"
-                >
-                    Log in
-                    <span aria-hidden="true">→</span>
-                </a>
-                </div>
-
-            </div>
-        </header>
-
-        <div class="max-w-4xl mx-auto p-6">
-            <h1 class="text-3xl font-extrabold text-slate-800 mb-8"> Meu Financeiro</h1>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-500">
-                    <p class="text-sm text-gray-500 font-medium uppercase">Entradas</p>
-                    <p id="resumo-entradas" class="text-2xl font-bold text-green-600">R$ 0,00</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-red-500">
-                    <p class="text-sm text-gray-500 font-medium uppercase">Dívidas (Saídas)</p>
-                    <p id="resumo-saidas" class="text-2xl font-bold text-red-600">R$ 0,00</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
-                    <p class="text-sm text-gray-500 font-medium uppercase">Saldo Total</p>
-                    <p id="resumo-saldo" class="text-2xl font-bold text-slate-800">R$ 0,00</p>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-                <h2 class="text-lg font-bold mb-4">Novo Lançamento</h2>
-
-                <form id="form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    <input id="titulo" placeholder="Ex: Aluguel" class="border p-2 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none" required>
-                    <input id="valor" type="number" step="0.01" placeholder="Valor (R$)" class="border p-2 rounded-lg" required>
-                    <input id="data" type="date" class="border p-2 rounded-lg">
-
-                    <select id="tipo" class="border p-2 rounded-lg">
-                        <option value="saida"> Saída (Dívida)</option>
-                        <option value="entrada"> Entrada (Receita)</option>
-                    </select>
-
-                    <select id="status" class="border p-2 rounded-lg">
-                        <option value="ativo">Pendente</option>
-                        <option value="concluido">Pago/Recebido</option>
-                    </select>
-
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
-                        + Adicionar
-                    </button>
-                </form>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="p-4 border-b bg-gray-50 flex justify-between items-center">
-                    <h3 class="font-bold">Histórico</h3>
-
-                    <select id="filtro-tipo" class="text-sm border rounded p-1">
-                        <option value="">Todos os tipos</option>
-                        <option value="entrada">Entradas</option>
-                        <option value="saida">Saídas</option>
-                    </select>
-                </div>
-
-                <ul id="lista" class="divide-y divide-gray-100"></ul>
-            </div>
+    <header class="bg-slate-900 text-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold">IF-Nanças</h1>
+            <span class="text-sm text-slate-300">Mini-Sistema de Registros</span>
         </div>
+    </header>
+
+    <main class="flex-1 max-w-4xl mx-auto p-6 space-y-6">
+
+        <div id="feedback" class="hidden p-3 rounded text-sm"></div>
+
+        <div id="loading" class="hidden text-center text-sm text-gray-500">
+            Carregando dados...
+        </div>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-4 rounded-xl shadow border-l-4 border-green-500">
+                <p class="text-xs text-gray-500 uppercase">Entradas</p>
+                <p id="resumo-entradas" class="text-xl font-bold text-green-600">R$ 0</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow border-l-4 border-red-500">
+                <p class="text-xs text-gray-500 uppercase">Saídas</p>
+                <p id="resumo-saidas" class="text-xl font-bold text-red-600">R$ 0</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow border-l-4 border-blue-500">
+                <p class="text-xs text-gray-500 uppercase">Saldo</p>
+                <p id="resumo-saldo" class="text-xl font-bold text-slate-800">R$ 0</p>
+            </div>
+        </section>
+
+        <section class="bg-white p-6 rounded-xl shadow">
+            <h2 class="text-lg font-bold mb-4">Cadastrar / Editar Item</h2>
+
+            <form id="form" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input id="titulo" type="text" placeholder="Título (mín. 3 caracteres)"
+                    class="border p-2 rounded" required>
+
+                <input id="valor" type="number" step="0.01" min="0"
+                    placeholder="Valor (R$)" class="border p-2 rounded">
+
+                <input id="data" type="date" class="border p-2 rounded">
+
+                <select id="tipo" class="border p-2 rounded">
+                    <option value="entrada">Entrada</option>
+                    <option value="saida">Saída</option>
+                </select>
+
+                <select id="status" class="border p-2 rounded">
+                    <option value="ativo">Ativo</option>
+                    <option value="concluido">Concluído</option>
+                    <option value="arquivado">Arquivado</option>
+                </select>
+
+                <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded md:col-span-2">
+                    Salvar Item
+                </button>
+            </form>
+        </section>
+
+        <section class="bg-white rounded-xl shadow overflow-hidden">
+            <div class="p-4 border-b bg-gray-50 flex justify-between items-center">
+                <h3 class="font-bold">Itens Cadastrados</h3>
+
+                <div class="flex gap-2">
+                    <select id="filtro-tipo" class="border rounded p-1 text-sm">
+                        <option value="">Todos os tipos</option>
+                        <option value="entrada">Entrada</option>
+                        <option value="saida">Saída</option>
+                    </select>
+
+                    <select id="filtro-status" class="border rounded p-1 text-sm">
+                        <option value="">Todos os status</option>
+                        <option value="ativo">Ativo</option>
+                        <option value="concluido">Concluído</option>
+                        <option value="arquivado">Arquivado</option>
+                    </select>
+                </div>
+            </div>
+
+            <ul id="lista" class="divide-y text-sm"></ul>
+        </section>
+
     </main>
 
-    <footer class="w-full h-16 bg-slate-900 text-white flex items-center justify-center flex-col">
-        <p class="text-sm">© 2026 - Controle de Finanças</p>
-        <p><a href="https://github.com/Daviddutra07/ProjetoAPI-Teste.git">Github do projeto</a></p>
+    <footer class="bg-slate-900 text-white text-center text-sm py-4">
+        © 2026 — Projeto IF-Nanças<br>
+        <a href="https://github.com/Daviddutra07/ProjetoAPI-Teste"
+            class="underline text-slate-300" target="_blank">
+            Repositório no GitHub
+        </a>
     </footer>
 
-    <script>
-        const API = "http://127.0.0.1:5000/items";
-
-        async function carregarDados() {
-            const tipo = document.getElementById('filtro-tipo').value;
-
-            const res = await fetch(`${API}?tipo=${tipo}`);
-            const items = await res.json();
-
-            const resResumo = await fetch(`${API}/summary`);
-            const resumo = await resResumo.json();
-
-            renderizar(items, resumo);
-        }
-
-        function renderizar(items, resumo) {
-            document.getElementById('resumo-entradas').innerText = `R$ ${resumo.total_entradas.toFixed(2)}`;
-            document.getElementById('resumo-saidas').innerText = `R$ ${resumo.total_saidas.toFixed(2)}`;
-            document.getElementById('resumo-saldo').innerText = `R$ ${resumo.saldo.toFixed(2)}`;
-
-            const lista = document.getElementById('lista');
-            lista.innerHTML = items.map(i => `
-                <li class="p-4 flex justify-between items-center hover:bg-gray-50">
-                    <div>
-                        <p class="font-semibold text-slate-700">${i.titulo}</p>
-                        <p class="text-xs text-gray-400">${i.data || 'Sem data'}</p>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <span class="font-bold ${i.tipo === 'entrada' ? 'text-green-500' : 'text-red-500'}">
-                            ${i.tipo === 'entrada' ? '+' : '-'} R$ ${i.valor.toFixed(2)}
-                        </span>
-                        <button onclick="deletar(${i.id})" class="text-gray-300 hover:text-red-500 text-sm">✖</button>
-                    </div>
-                </li>
-            `).join('');
-        }
-
-        document.getElementById('form').onsubmit = async (e) => {
-            e.preventDefault();
-
-            const payload = {
-                titulo: titulo.value,
-                valor: valor.value,
-                tipo: tipo.value,
-                status: status.value,
-                data: data.value
-            };
-
-            await fetch(API, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            e.target.reset();
-            carregarDados();
-        };
-
-        async function deletar(id) {
-            await fetch(`${API}/${id}`, { method: 'DELETE' });
-            carregarDados();
-        }
-
-        document.getElementById('filtro-tipo').onchange = carregarDados;
-        carregarDados();
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>

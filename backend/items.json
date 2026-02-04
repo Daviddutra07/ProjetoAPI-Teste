@@ -1,10 +1,18 @@
 [
   {
     "id": 1,
-    "titulo": "aluguel",
+    "titulo": "Salário",
     "tipo": "entrada",
     "status": "ativo",
-    "valor": 30000.0,
+    "valor": 30000,
     "data": "2026-01-30"
+  },
+  {
+    "id": 2,
+    "titulo": "Conta de Luz",
+    "tipo": "saida",
+    "status": "ativo",
+    "valor": 1200,
+    "data": "2026-02-04"
   }
 ]
