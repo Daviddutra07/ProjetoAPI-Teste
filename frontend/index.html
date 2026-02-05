@@ -91,7 +91,22 @@
                 </div>
             </div>
 
-            <ul id="lista" class="divide-y text-sm"></ul>
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm">
+                <thead class="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th class="p-3 text-left">Título</th>
+                    <th class="p-3 text-left">Tipo</th>
+                    <th class="p-3 text-right">Valor (R$)</th>
+                    <th class="p-3 text-left">Status</th>
+                    <th class="p-3 text-left">Data</th>
+                    <th class="p-3 text-center">Ações</th>
+                  </tr>
+                </thead>
+
+                <tbody id="lista" class="divide-y bg-white"></tbody>
+                </table>
+            </div>
         </section>
 
     </main>

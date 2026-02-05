@@ -15,7 +15,7 @@ const resumoSaldo = document.getElementById("resumo-saldo");
 
 let editandoId = null;
 
-// Mensangens de Erro
+// Mensagens de aviso
 function mostrarFeedback(mensagem, tipo) {
     feedback.className = "p-3 rounded text-sm";
 
@@ -33,7 +33,7 @@ function mostrarFeedback(mensagem, tipo) {
     }, 3000);
 }
 
-// Puxar os itens do JSON
+// Puxar itens do json
 function carregar() {
     loading.classList.remove("hidden");
     lista.innerHTML = "";
@@ -70,26 +70,27 @@ function carregar() {
                 }
 
                 lista.innerHTML += `
-                <li class="border-b py-2 flex justify-between items-center">
-                    <div>
-                        <strong>${item.titulo}</strong>
-                        (${item.tipo}) -
-                        R$ ${item.valor || 0} -
-                        ${item.status} -
-                        ${item.data || ""}
-                    </div>
-                    <div>
-                        <button onclick="editarItem(${item.id})" class="text-blue-500 mr-2">
+                <tr class="hover:bg-gray-50">
+                    <td class="p-3 font-medium">${item.titulo}</td>
+                    <td class="p-3 capitalize">${item.tipo}</td>
+                    <td class="p-3 text-right">R$ ${item.valor || 0}</td>
+                    <td class="p-3 capitalize">${item.status}</td>
+                    <td class="p-3">${item.data || "-"}</td>
+                    <td class="p-3 text-center space-x-2">
+                        <button onclick="editarItem(${item.id})"
+                            class="text-blue-600 hover:underline">
                             Editar
                         </button>
-                        <button onclick="editarStatus(${item.id})" class="text-yellow-500 mr-2">
+                        <button onclick="editarStatus(${item.id})"
+                            class="text-yellow-600 hover:underline">
                             Status
                         </button>
-                        <button onclick="remover(${item.id})" class="text-red-500">
+                        <button onclick="remover(${item.id})"
+                            class="text-red-600 hover:underline">
                             Remover
                         </button>
-                    </div>
-                </li>`;
+                    </td>
+                </tr>`;
             });
 
             resumoEntradas.innerText = "R$ " + totalEntrada;
@@ -104,7 +105,7 @@ function carregar() {
         });
 }
 
-// Salvar o Item
+// Salvar item
 form.onsubmit = function (e) {
     e.preventDefault();
 
@@ -148,7 +149,7 @@ form.onsubmit = function (e) {
         });
 };
 
-// Edição de Item
+// Editar Item
 function editarItem(id) {
     fetch(`${API}/${id}`)
         .then(res => res.json())
@@ -163,13 +164,13 @@ function editarItem(id) {
         });
 }
 
-// Remover o Item
+// Deletar item
 function remover(id) {
     fetch(`${API}/${id}`, { method: "DELETE" })
         .then(() => carregar());
 }
 
-// Mudar status
+// Alterar Status
 function editarStatus(id) {
     fetch(`${API}/${id}`)
         .then(res => res.json())
@@ -191,9 +192,8 @@ function editarStatus(id) {
         });
 }
 
-// Filttros
+// Filtross
 filtroTipo.onchange = carregar;
 filtroStatus.onchange = carregar;
-
 
 carregar();

@@ -3,7 +3,7 @@
     "id": 1,
     "titulo": "Salário",
     "tipo": "entrada",
-    "status": "ativo",
+    "status": "concluido",
     "valor": 30000,
     "data": "2026-01-30"
   },
@@ -11,8 +11,16 @@
     "id": 2,
     "titulo": "Conta de Luz",
     "tipo": "saida",
-    "status": "ativo",
+    "status": "arquivado",
     "valor": 1200,
     "data": "2026-02-04"
+  },
+  {
+    "id": 3,
+    "titulo": "Salário",
+    "tipo": "entrada",
+    "status": "arquivado",
+    "valor": 30000,
+    "data": "2026-01-30"
   }
 ]
